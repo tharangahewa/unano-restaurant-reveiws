@@ -1,7 +1,8 @@
-const { series, src, dest } = require('gulp');
+const { series, src, dest, watch } = require('gulp');
 const clean = require('gulp-clean');
 const sass = require('gulp-sass');
 const autoprefixer = require('gulp-autoprefixer');
+const browserSync = require('browser-sync').create();
 
 
 function cssClean() {
@@ -17,8 +18,20 @@ function cssTranspile(cb) {
                 browsers: ["last 2 versions"]
             })
         )
-        .pipe(dest("css"));
+        .pipe(dest("css"))
+        .pipe(browserSync.stream());
 }
 
 exports.cssTranspile = cssTranspile;
-exports.default = series(cssClean, cssTranspile);
+
+exports.default = function () {
+
+    watch(['js/**', 'sass/**', 'img/**', 'data/**', '*.html'],
+        series(cssClean, cssTranspile)
+    );
+
+    browserSync.init({
+        server: "./",
+        port: 8000
+    });
+};
