@@ -1,8 +1,15 @@
 const { series, src, dest, watch } = require('gulp');
 const clean = require('gulp-clean');
+const browserSync = require('browser-sync').create();
+
+//css
 const sass = require('gulp-sass');
 const autoprefixer = require('gulp-autoprefixer');
-const browserSync = require('browser-sync').create();
+
+//images
+const imagemin = require('gulp-imagemin');
+const imageResize = require('gulp-image-resize');
+const rename = require('gulp-rename');
 
 
 function cssClean() {
@@ -22,7 +29,37 @@ function cssTranspile(cb) {
         .pipe(browserSync.stream());
 }
 
+function imageProcess() {
+    const sizes = [
+        { width: 320, suffix: '320w' },
+        { width: 480, suffix: '480w' },
+        { width: 800, suffix: '800w' }
+    ];
+
+    let stream;
+    sizes.forEach((size) => {
+        stream = src('img_ori/**')
+            .pipe(imageResize({ width: size.width }))
+            .pipe(
+                rename((path) => {
+                    path.basename += `-${size.suffix}`;
+                })
+            )
+            .pipe(
+                imagemin([imagemin.jpegtran({ progressive: true })])
+            )
+            .pipe(dest('img'));
+    });
+    return stream;
+}
+
+function imageClean() {
+    return src('img/**/*.jpg', { read: false })
+        .pipe(clean());
+}
+
 exports.cssTranspile = cssTranspile;
+exports.image = series(imageClean, imageProcess);
 
 exports.default = function () {
 
