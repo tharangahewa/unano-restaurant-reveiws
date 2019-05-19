@@ -1,3 +1,4 @@
+const imageSizesQuery = "(max-width: 320px) 280px,(max-width: 480px) 440px, (max-width: 800px) 440px, 800px";
 let restaurant;
 var newMap;
 
@@ -87,8 +88,10 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
   address.innerHTML = restaurant.address;
 
   const image = document.getElementById('restaurant-img');
-  image.className = 'restaurant-img'
-  image.src = DBHelper.imageUrlForRestaurant(restaurant);
+  ImageHelper.fillImageElement( image, restaurant);
+  image.className = 'restaurant-img';
+  image.sizes = imageSizesQuery;
+  
 
   const cuisine = document.getElementById('restaurant-cuisine');
   cuisine.innerHTML = restaurant.cuisine_type;

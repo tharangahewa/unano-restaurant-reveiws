@@ -1,3 +1,4 @@
+const imageSizesQuery = "(max-width: 320px) 196px,(max-width: 480px) 270px, (max-width: 800px) 270px, 800px";
 let restaurants,
   neighborhoods,
   cuisines
@@ -153,6 +154,16 @@ fillRestaurantsHTML = (restaurants = self.restaurants) => {
 }
 
 /**
+ <img srcset="elva-fairy-320w.jpg 320w,
+             elva-fairy-480w.jpg 480w,
+             elva-fairy-800w.jpg 800w"
+     sizes="(max-width: 320px) 280px,
+            (max-width: 480px) 440px,
+            800px"
+     src="elva-fairy-800w.jpg" alt="Elva dressed as a fairy">
+ */
+
+/**
  * Create restaurant HTML.
  */
 createRestaurantHTML = (restaurant) => {
@@ -160,7 +171,8 @@ createRestaurantHTML = (restaurant) => {
 
   const image = document.createElement('img');
   image.className = 'restaurant-img';
-  image.src = DBHelper.imageUrlForRestaurant(restaurant);
+  image.sizes = imageSizesQuery;
+  ImageHelper.fillImageElement( image, restaurant);
   li.append(image);
 
   const name = document.createElement('h1');
