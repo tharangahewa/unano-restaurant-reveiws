@@ -5,7 +5,7 @@ var newMap;
 /**
  * Initialize map as soon as the page is loaded.
  */
-document.addEventListener('DOMContentLoaded', (event) => {  
+document.addEventListener('DOMContentLoaded', (event) => {
   initMap();
 });
 
@@ -16,7 +16,7 @@ initMap = () => {
   fetchRestaurantFromURL((error, restaurant) => {
     if (error) { // Got an error!
       console.error(error);
-    } else {      
+    } else {
       self.newMap = L.map('map', {
         center: [restaurant.latlng.lat, restaurant.latlng.lng],
         zoom: 16,
@@ -28,14 +28,14 @@ initMap = () => {
         attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
           '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
           'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-        id: 'mapbox.streets'    
+        id: 'mapbox.streets'
       }).addTo(newMap);
       fillBreadcrumb();
       DBHelper.mapMarkerForRestaurant(self.restaurant, self.newMap);
     }
   });
-}  
- 
+}
+
 /* window.initMap = () => {
   fetchRestaurantFromURL((error, restaurant) => {
     if (error) { // Got an error!
@@ -85,13 +85,19 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
   name.innerHTML = restaurant.name;
 
   const address = document.getElementById('restaurant-address');
-  address.innerHTML = restaurant.address;
+  const pinIcon = document.createElement('i');
+  pinIcon.classList.add("fas");
+  pinIcon.classList.add("fa-map-marker-alt");
+  address.appendChild(pinIcon);
+  const span = document.createElement('span');
+  span.innerHTML = restaurant.address;
+  address.appendChild(span);
 
   const image = document.getElementById('restaurant-img');
-  ImageHelper.fillImageElement( image, restaurant);
+  ImageHelper.fillImageElement(image, restaurant);
   image.className = 'restaurant-img';
   image.sizes = imageSizesQuery;
-  
+
 
   const cuisine = document.getElementById('restaurant-cuisine');
   cuisine.innerHTML = restaurant.cuisine_type;
@@ -151,17 +157,37 @@ fillReviewsHTML = (reviews = self.restaurant.reviews) => {
  */
 createReviewHTML = (review) => {
   const li = document.createElement('li');
+  const div = document.createElement('div');
+
+  //add name
   const name = document.createElement('p');
-  name.innerHTML = review.name;
-  li.appendChild(name);
+  const userIcon = document.createElement('i');
+  userIcon.classList.add("fas");
+  userIcon.classList.add("fa-user-circle");
+  name.appendChild(userIcon);
 
+  const nameSpan = document.createElement('span');
+  nameSpan.innerHTML = review.name;
+  name.appendChild(nameSpan);
+  div.appendChild(name);
+
+  //add rating
+  div.appendChild(createRatingsHTML(review));
+
+  //add date
   const date = document.createElement('p');
-  date.innerHTML = review.date;
-  li.appendChild(date);
+  const dateIcon = document.createElement('i');
+  dateIcon.classList.add("far");
+  dateIcon.classList.add("fa-calendar-alt");
+  date.appendChild(dateIcon);
 
-  const rating = document.createElement('p');
-  rating.innerHTML = `Rating: ${review.rating}`;
-  li.appendChild(rating);
+  const dateSpan = document.createElement('span');
+  dateSpan.innerHTML = review.date;
+  date.appendChild(dateSpan);
+  div.appendChild(date);
+
+
+  li.appendChild(div);
 
   const comments = document.createElement('p');
   comments.innerHTML = review.comments;
@@ -171,9 +197,36 @@ createReviewHTML = (review) => {
 }
 
 /**
+ * Create ratings HTML and add it to the webpage.
+ */
+createRatingsHTML = (review) => {
+  const rating = document.createElement('p');
+  rating.classList.add("stars");
+
+  for (let i = 0; i < review.rating; i++) {
+    const starIcon = document.createElement('i');
+    starIcon.classList.add("rating-star");
+    starIcon.classList.add("fa-star");
+    starIcon.classList.add("fa");
+    rating.appendChild(starIcon);
+  }
+
+  const emptyStars = 5 - review.rating;
+  if (emptyStars > 0) {
+    for (let i = 0; i < emptyStars; i++) {
+      const starIcon = document.createElement('i');
+      starIcon.classList.add("fa-star");
+      starIcon.classList.add("far");
+      rating.appendChild(starIcon);
+    }
+  }
+  return rating;
+}
+
+/**
  * Add restaurant name to the breadcrumb navigation menu
  */
-fillBreadcrumb = (restaurant=self.restaurant) => {
+fillBreadcrumb = (restaurant = self.restaurant) => {
   const breadcrumb = document.getElementById('breadcrumb');
   const li = document.createElement('li');
   li.innerHTML = restaurant.name;
