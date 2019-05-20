@@ -10,6 +10,14 @@ document.addEventListener('DOMContentLoaded', (event) => {
 });
 
 /**
+ * Show map click event.
+ */
+document.getElementById('map-button').addEventListener('click', (event) => {
+  event.preventDefault();
+  document.getElementsByClassName('col-2')[0].classList.toggle("open");
+});
+
+/**
  * Initialize leaflet map
  */
 initMap = () => {

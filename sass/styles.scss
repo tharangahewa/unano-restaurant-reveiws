@@ -16,7 +16,7 @@ $background_color_1: #fdfdfd;
 $background_color_2: #f3f3f3;
 $background_color_3: #444;
 $background_color_4: #252831;
-$background_color_5: #eee;
+$background_color_5: #ccc;
 $background_color_6: #ccc;
 $background_color_7: #3397DB;
 $background_color_8: white;
@@ -155,7 +155,7 @@ nav {
 	text-align: center;
 	h1 {
 		margin: auto;
-		padding: 20px 0px;
+		padding: 12px 0px;
 		a {
 			color: $color_5;
 			font-size: 14pt;
@@ -167,16 +167,63 @@ nav {
 	@media only screen and (max-width: 440px) {
 		h1 {
 			a {
-				font-size: 11pt;
+				font-size: 12pt;
 				letter-spacing: 5px;
 				text-transform: uppercase;
 			}
 		}
 	}
 }
+
+.sub-header {
+	width: 100%;
+	height: 40px;
+	background-color: $background_color_5;
+	#map-button {
+		font-size: 24px;
+		float: right;
+		padding: 5px 15px 5px 0px ;
+	}
+	@media only screen and (min-width: 800px) {
+		#map-button {
+			display: none;
+		}
+	}
+
+	#breadcrumb {
+		position: relative;
+		float: left;
+		width:  80%;
+		padding: 10px 40px 5px ;
+		list-style: none;
+		margin: 0;
+		
+		/* Display list items side by side */
+		li {
+			display: inline;
+			font-size: 15px;
+			padding: 4px 2px;
+		   
+			/* Add a color to all links inside the list */
+			a {
+				color: $color_7;
+				text-decoration: none;
+	
+				/* Add a color on mouse-over */
+				&:hover {
+					color: $color_8;
+					text-decoration: underline;
+				}
+			}
+		}
+		/* TODO Add a slash symbol (/) before/behind each list item */
+	}
+}
+
 section {
 	display: block;
 }
+
 #maincontent {
 	background-color: $background_color_2;
 	min-height: 100%;
@@ -191,34 +238,9 @@ section {
 	text-transform: uppercase;
 	margin-top: 20px;
 }
+
 img {
 	max-width: 100%;
-}
-#breadcrumb {
-	padding: 4px 40px 4px;
-	list-style: none;
-	background-color: $background_color_5;
-	font-size: 17px;
-	margin: 0;
-	width:  100%;
-	
-    /* Display list items side by side */
-	li {
-        display: inline;
-       
-        /* Add a color to all links inside the list */
-		a {
-			color: $color_7;
-            text-decoration: none;
-
-            /* Add a color on mouse-over */
-			&:hover {
-				color: $color_8;
-				text-decoration: underline;
-			}
-		}
-	}
-	/* TODO Add a slash symbol (/) before/behind each list item */
 }
 
 
@@ -349,11 +371,11 @@ img {
 
 	#map-container {
 		background: blue none repeat scroll 0 0;
-		height: calc(100vh - 110px);;
+		height: calc(100vh - 95px);;
 		position: fixed; 
 		width: 50%;
 		max-width: 600px;
-  		top: 110px; 
+		top: 95px;   
 	}
 
 	@media only screen and (max-width: 800px) {
@@ -367,7 +389,18 @@ img {
 		}
 
 		.col-2 {
-			display: none;
+			#map-container {
+				width: 100vh;
+				left: 100vh;
+				transition: left 0.3s ease;
+			}
+		}
+
+		.col-2.open {
+			#map-container {
+				width: 100vh;
+				left: 0vh;
+			}
 		}
 	}
 
