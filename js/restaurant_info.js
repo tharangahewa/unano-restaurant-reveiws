@@ -43,7 +43,7 @@ initMediaQueryListeners = () => {
 }
 
 /**
- * Show map click event.
+ * Handle map click event.
  */
 document.getElementById('map-button').addEventListener('click', (event) => {
   event.preventDefault();
@@ -59,6 +59,14 @@ document.getElementById('map-button').addEventListener('click', (event) => {
     console.log( 'un-focus');
   }
   mapColumn.classList.toggle("open");
+});
+
+/**
+ * Handle home click event.
+ */
+document.getElementById('home-button').addEventListener('click', (event) => {
+  event.preventDefault();
+  location.href="/"
 });
 
 /**

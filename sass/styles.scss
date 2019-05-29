@@ -18,7 +18,7 @@ $background_color_3: #444;
 $background_color_4: #252831;
 $background_color_5: #ccc;
 $background_color_6: #ccc;
-$background_color_7: #3397DB;
+$background_color_7: #252831;
 $background_color_8: white;
 $background_color_9: #fff;
 $background_color_10: orange;
@@ -86,7 +86,7 @@ a {
 		text-decoration: none;
 	}
 	img {
-		border: none 0px #fff;
+		border: none 0px $color_5;
 	}
 }
 h1 {
@@ -190,6 +190,17 @@ nav {
 		}
 	}
 
+	#home-button {
+		font-size: 24px;
+		float: left;
+		padding: 5px 0px 5px 15px ;
+	}
+	@media only screen and (min-width: 800px) {
+		#home-button {
+			display: none;
+		}
+	}
+
 	#breadcrumb {
 		position: relative;
 		float: left;
@@ -202,7 +213,7 @@ nav {
 		li {
 			display: inline;
 			font-size: 15px;
-			padding: 4px 2px;
+			padding: 4px 0px;
 		   
 			/* Add a color to all links inside the list */
 			a {
@@ -216,7 +227,19 @@ nav {
 				}
 			}
 		}
-		/* TODO Add a slash symbol (/) before/behind each list item */
+
+		/* Add a slash symbol (/) before/behind each list item */
+		li+li:before {
+			padding: 1px;
+			color: black;
+			content: "/\00a0";
+		}
+	}
+
+	@media only screen and (max-width: 800px) {
+		#breadcrumb {
+			display: none;
+		}
 	}
 }
 
@@ -300,7 +323,7 @@ img {
 		flex-direction: column;
 		width: 90%;
 		max-width: 350px;
-		margin: 20px auto 0px auto ;
+		margin: 10px;
 
 		box-shadow:0 0 10px rgba(0, 0, 0, 0.5);
 		border-radius: 12px; 
@@ -398,7 +421,6 @@ img {
 
 		.col-2.open {
 			#map-container {
-				width: 100vw;
 				left: 0vh;
 			}
 		}
