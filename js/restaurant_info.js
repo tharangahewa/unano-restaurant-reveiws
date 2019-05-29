@@ -1,20 +1,64 @@
 const imageSizesQuery = "(max-width: 320px) 280px,(max-width: 480px) 440px, (max-width: 800px) 440px, 800px";
-let restaurant;
+var restaurant;
 var newMap;
+/* mapVisible stores whether the map is in cavas or off canvas.*/  
+var mapVisible = true;
+const mapContainer = document.getElementById('map');
+const mapColumn = document.getElementsByClassName('col-2')[0];
+let mapFocusableItems; 
 
 /**
- * Initialize map as soon as the page is loaded.
+ * Initialize map as soon as the page is loaded. 
+ * Also setup the media queries and run it on load. 
  */
-document.addEventListener('DOMContentLoaded', (event) => {
+window.addEventListener('DOMContentLoaded', (e) => {
   initMap();
+  initMediaQueryListeners();
 });
+
+/** 
+ * If map is not visible set the tabindex to -1 all focusable elements in the map.
+ * */
+window.addEventListener('load', (e) => {
+  mapFocusableItems = mapContainer.querySelectorAll('a, img.leaflet-marker-icon');
+  
+  if(!mapVisible ){
+    mapContainer.setAttribute( 'tabindex', -1);
+    mapFocusableItems.forEach( e => e.setAttribute( 'tabindex', -1));
+  }
+});
+
+initMediaQueryListeners = () => {
+  const handleMQ = event => {
+    //identify the initial state of the map.
+    if(event.matches){
+      mapVisible = false;
+    }else{
+      mapVisible = true;
+    }
+  };
+  const mq = window.matchMedia('screen and (max-width: 800px)');
+  mq.addListener(handleMQ );
+  handleMQ(mq);
+}
 
 /**
  * Show map click event.
  */
 document.getElementById('map-button').addEventListener('click', (event) => {
   event.preventDefault();
-  document.getElementsByClassName('col-2')[0].classList.toggle("open");
+  if (!mapVisible) {
+    mapVisible = true;
+    mapContainer.focus();
+    mapFocusableItems.forEach( e => e.setAttribute( 'tabindex', 0));
+    console.log( 'focus');
+  } else {
+    mapVisible = false;
+    mapContainer.setAttribute( 'tabindex', -1); 
+    mapFocusableItems.forEach( e => e.setAttribute( 'tabindex', -1));
+    console.log( 'un-focus');
+  }
+  mapColumn.classList.toggle("open");
 });
 
 /**
