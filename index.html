@@ -20,17 +20,17 @@
   </header>
 
   <main id="maincontent">
-    <section id="map-container">
+    <section id="map-container" role="application" aria-label="location">
       <div id="map"></div>
     </section>
     <section>
       <div class="filter-options">
         <!-- <h2>Filter Results</h2> intentinally commented as I think these buttons and content describe themselves-->
         <div class="select-group">
-          <select id="neighborhoods-select" name="neighborhoods" onchange="updateRestaurants()">
+          <select id="neighborhoods-select" name="neighborhoods" onchange="updateRestaurants()" aria-label="select neighborhood">
             <option value="all">All Neighborhoods</option>
           </select>
-          <select id="cuisines-select" name="cuisines" onchange="updateRestaurants()">
+          <select id="cuisines-select" name="cuisines" onchange="updateRestaurants()" aria-label="select cuisine">
             <option value="all">All Cuisines</option>
           </select>
         </div>
