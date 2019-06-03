@@ -1,5 +1,4 @@
 var staticCacheName = 'reviews-v5'
-console.log(staticCacheName);
 
 self.addEventListener('install', function(event) {
   event.waitUntil(
@@ -13,7 +12,7 @@ self.addEventListener('install', function(event) {
         'js/restaurant_info.js',
         'css/styles.css',
         'https://unpkg.com/leaflet@1.3.1/dist/leaflet.css',
-
+        'https://use.fontawesome.com/releases/v5.8.2/css/all.css'
       ]);
     })
   );
@@ -36,7 +35,8 @@ self.addEventListener('activate', function(event) {
 
 self.addEventListener('fetch', function(event) {
   event.respondWith(
-    caches.match(event.request).then(function(response) {
+    //always match the url without the parameters 
+    caches.match(event.request.url.split('?')[0]).then(function(response) {
       return response || fetch(event.request);
     })
   );
