@@ -1,6 +1,10 @@
 const { series, src, dest, watch } = require('gulp');
 const clean = require('gulp-clean');
 const browserSync = require('browser-sync').create();
+const minifyCSS = require('gulp-clean-css');
+const minifyJS = require('gulp-terser');
+const minifyHTML = require('gulp-htmlmin');
+var minifyJson = require('gulp-jsonminify');
 
 //css
 const sass = require('gulp-sass');
@@ -13,7 +17,12 @@ const rename = require('gulp-rename');
 
 
 function cssClean() {
-    return src('css/**/*.css', { read: false })
+    return src('css/**/*.css', { read: false, allowEmpty: true })
+        .pipe(clean());
+}
+
+function distClean() {
+    return src('dist', { read: false, allowEmpty: true })
         .pipe(clean());
 }
 
@@ -27,6 +36,44 @@ function cssTranspile(cb) {
         )
         .pipe(dest("css"))
         .pipe(browserSync.stream());
+}
+
+function cssMinify() {
+    return src("css/**/*.css")
+        .pipe(minifyCSS())
+        .pipe(dest("dist/css"));
+}
+
+function jsMinify() {
+    return src("js/**/*.js")
+        .pipe(minifyJS())
+        .pipe(dest("dist/js"));
+}
+
+function swMinify() {
+    return src("sw.js")
+        .pipe(minifyJS())
+        .pipe(dest("dist"));
+}
+
+function htmlMinify() {
+    return src('./*.html')
+        .pipe(minifyHTML({
+            collapseWhitespace: true,
+            removeComments: true
+        }))
+        .pipe(dest('./dist'));
+}
+
+function jsonMinify() {
+    return src(['data/*.json'])
+        .pipe(minifyJson())
+        .pipe(dest('dist/data'));
+}
+
+function imgCopy() {
+    return src(['img/*.jpg'])
+        .pipe(dest('dist/img'));
 }
 
 function imageProcess() {
@@ -60,6 +107,7 @@ function imageClean() {
 
 exports.cssTranspile = cssTranspile;
 exports.image = series(imageClean, imageProcess);
+exports.dist = series(distClean, cssTranspile, cssMinify, htmlMinify, jsMinify, swMinify, jsonMinify, imgCopy);
 
 exports.default = function () {
 
