@@ -11,6 +11,7 @@ self.addEventListener('install', function(event) {
         'js/image_helper.js',
         'js/restaurant_info.js',
         'css/styles.css',
+        'data/restaurants.json',
         'https://unpkg.com/leaflet@1.3.1/dist/leaflet.css',
         'https://use.fontawesome.com/releases/v5.8.2/css/all.css'
       ]);
