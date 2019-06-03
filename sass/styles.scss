@@ -52,6 +52,12 @@ td {
 	color: $color_1;
 	line-height: 1.5;
 }
+@media only screen and (max-width: 360px) {
+	td {
+			font-size: 9pt;
+	}
+}
+
 th {
 	font-family: $font_family_1;
 	font-size: 10pt;
@@ -64,6 +70,13 @@ p {
 	color: $color_1;
 	line-height: 1.5;
 }
+
+@media only screen and (max-width: 360px) {
+	p {
+		font-size: 8pt;
+	}
+}
+
 ul {
 	font-family: $font_family_1;
 	font-size: 10pt;
@@ -477,6 +490,12 @@ img {
 	font-size: 12pt;
 	margin: 10px 0px;
 }
+@media only screen and (max-width: 440px) {
+	#restaurant-address {
+		font-size: 10pt;
+	}
+}
+
 #restaurant-cuisine {
 	background-color: $background_color_11;
 	color: $color_10;
